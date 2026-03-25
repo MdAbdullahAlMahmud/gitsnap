@@ -21,7 +21,9 @@ npx gitsnap
 ```
 
 <div align="center">
-  <img src="assets/preview-dark.png" alt="gitsnap dark theme" width="720" />
+  <img src="assets/preview-dark.png" alt="gitsnap default dark theme" width="720" />
+  <br/><br/>
+  <img src="assets/preview-terminal.png" alt="gitsnap terminal layout" width="720" />
   <br/><br/>
   <img src="assets/preview-light.png" alt="gitsnap light theme" width="720" />
 </div>
@@ -34,10 +36,13 @@ npx gitsnap
 - **GitHub stats** — stars, forks, open issues, contributors (auto-detected from remote)
 - **Repo metadata** — file count, total size, commit count, repo age
 - **Recent commits** — last 3 commits with short hash, message, and relative time
+- **Activity sparkline** — 24-week commit frequency bar chart embedded in the card
 - **Package info** — detected package manager + dependency count (npm, cargo, go modules, pip, pub)
 - **Topics/tags** — GitHub topics displayed as chips
+- **Two layouts** — `default` (modern card) and `terminal` (macOS window with shell aesthetic)
 - **Two themes** — `dark` (default) and `light`
 - **Three formats** — `png`, `pdf`, `svg`
+- **`--open` flag** — auto-opens the generated image after saving
 - **Zero config** — works on any git repo, no setup required
 - **Offline mode** — `--no-github` skips API calls entirely
 
@@ -60,6 +65,12 @@ npx gitsnap --format pdf
 
 # Skip GitHub API (faster, works offline)
 npx gitsnap --no-github
+
+# Terminal layout (macOS window aesthetic)
+npx gitsnap --layout terminal
+
+# Open the image automatically after saving
+npx gitsnap --open
 
 # Custom output path
 npx gitsnap --output ./cards/my-project
@@ -89,7 +100,9 @@ npx gitsnap
 | `-f, --format <fmt>` | `png` | Output format: `png` · `pdf` · `svg` |
 | `-o, --output <path>` | `gitsnap-output` | Output filename (no extension) |
 | `-t, --theme <theme>` | `dark` | Card theme: `dark` · `light` |
+| `-l, --layout <layout>` | `default` | Card layout: `default` · `terminal` |
 | `--no-github` | — | Skip GitHub API calls |
+| `--open` | — | Open generated image automatically |
 | `--width <px>` | `1200` | Card width in pixels |
 | `--height <px>` | `630` | Card height in pixels |
 | `--token <token>` | — | GitHub personal access token |

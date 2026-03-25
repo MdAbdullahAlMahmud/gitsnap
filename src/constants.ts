@@ -9,3 +9,5 @@ export const DEFAULT_OUTPUT = 'gitsnap-output';
 export const MAX_RECENT_COMMITS = 3;
 export const MAX_TOPICS = 5;
 export const MAX_LANGUAGES = 5;
+export const DEFAULT_LAYOUT = 'default' as const;
+export const ACTIVITY_WEEKS = 24; // weeks of commit history for sparkline

@@ -23,25 +23,33 @@ Handlebars.registerHelper('formatDate', (iso: string) => {
   }
 });
 
-let compiledTemplate: Handlebars.TemplateDelegate | null = null;
-let cachedStyles: string | null = null;
+// Template + style cache keyed by name
+const templateCache = new Map<string, Handlebars.TemplateDelegate>();
+const styleCache = new Map<string, string>();
 
-async function getTemplate(): Promise<Handlebars.TemplateDelegate> {
-  if (!compiledTemplate) {
-    const src = await fs.readFile(path.join(TEMPLATES_DIR, 'card.hbs'), 'utf-8');
-    compiledTemplate = Handlebars.compile(src);
+async function getTemplate(name: string): Promise<Handlebars.TemplateDelegate> {
+  if (!templateCache.has(name)) {
+    const src = await fs.readFile(path.join(TEMPLATES_DIR, `${name}.hbs`), 'utf-8');
+    templateCache.set(name, Handlebars.compile(src));
   }
-  return compiledTemplate;
+  return templateCache.get(name)!;
 }
 
-async function getStyles(): Promise<string> {
-  if (!cachedStyles) {
-    cachedStyles = await fs.readFile(path.join(TEMPLATES_DIR, 'styles.css'), 'utf-8');
+async function getStyles(name: string): Promise<string> {
+  if (!styleCache.has(name)) {
+    styleCache.set(name, await fs.readFile(path.join(TEMPLATES_DIR, `${name}.css`), 'utf-8'));
   }
-  return cachedStyles;
+  return styleCache.get(name)!;
 }
 
 export async function renderCard(snapshot: RepoSnapshot): Promise<string> {
-  const [template, styles] = await Promise.all([getTemplate(), getStyles()]);
+  const templateName = snapshot.layout === 'terminal' ? 'card.terminal' : 'card';
+  const stylesName   = snapshot.layout === 'terminal' ? 'styles.terminal' : 'styles';
+
+  const [template, styles] = await Promise.all([
+    getTemplate(templateName),
+    getStyles(stylesName),
+  ]);
+
   return template({ ...snapshot, styles });
 }

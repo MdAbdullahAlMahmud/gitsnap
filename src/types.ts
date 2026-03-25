@@ -3,10 +3,20 @@ export interface CLIOptions {
   format: 'png' | 'pdf' | 'svg';
   output: string;
   theme: 'dark' | 'light';
+  layout: 'default' | 'terminal';
   noGithub: boolean;
+  open: boolean;
   width: number;
   height: number;
   token?: string;
+}
+
+export interface WeeklyActivity {
+  /** ISO week start date (Monday) */
+  weekStart: string;
+  count: number;
+  /** 0–4 intensity level for rendering */
+  level: 0 | 1 | 2 | 3 | 4;
 }
 
 export interface CommitInfo {
@@ -35,6 +45,7 @@ export interface RepoScanResult {
   contributorCount: number;
   defaultBranch: string;
   remoteUrl: string | null;
+  weeklyActivity: WeeklyActivity[];
 }
 
 export interface GithubData {
@@ -81,8 +92,12 @@ export interface RepoSnapshot {
   // From GitHub (optional)
   github: GithubData | null;
 
+  // Activity
+  weeklyActivity: WeeklyActivity[];
+
   // Derived
   repoName: string;
   generatedAt: string;
   theme: 'dark' | 'light';
+  layout: 'default' | 'terminal';
 }

@@ -7,6 +7,7 @@ export function normalize(
   results: CollectorResults,
   repoPath: string,
   theme: 'dark' | 'light',
+  layout: 'default' | 'terminal' = 'default',
 ): RepoSnapshot {
   const { scan, packages, github } = results;
 
@@ -39,9 +40,13 @@ export function normalize(
     // GitHub data
     github: github ?? null,
 
+    // Activity
+    weeklyActivity: scan.weeklyActivity,
+
     // Derived
     repoName,
     generatedAt: new Date().toISOString(),
     theme,
+    layout,
   };
 }

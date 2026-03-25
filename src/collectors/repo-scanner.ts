@@ -3,8 +3,8 @@ import fs from 'node:fs/promises';
 import { createGit, getRemoteUrl, getDefaultBranch, getFirstCommitDate, getContributorCount } from '../utils/git.js';
 import { getLanguageInfo } from '../languages.js';
 import { formatRelativeDate } from '../utils/format.js';
-import type { RepoScanResult, LanguageBreakdown, CommitInfo } from '../types.js';
-import { MAX_RECENT_COMMITS, MAX_LANGUAGES } from '../constants.js';
+import type { RepoScanResult, LanguageBreakdown, CommitInfo, WeeklyActivity } from '../types.js';
+import { MAX_RECENT_COMMITS, MAX_LANGUAGES, ACTIVITY_WEEKS } from '../constants.js';
 
 interface FileStat {
   ext: string;
@@ -87,8 +87,64 @@ async function getRecentCommits(repoPath: string): Promise<{ commits: CommitInfo
   }
 }
 
+/** Returns Monday of the week containing `date` as an ISO date string */
+function getWeekStart(date: Date): string {
+  const d = new Date(date);
+  const day = d.getUTCDay(); // 0=Sun
+  d.setUTCDate(d.getUTCDate() - ((day + 6) % 7)); // shift to Monday
+  return d.toISOString().slice(0, 10);
+}
+
+async function getWeeklyActivity(repoPath: string): Promise<WeeklyActivity[]> {
+  try {
+    const git = createGit(repoPath);
+    const since = new Date();
+    since.setUTCDate(since.getUTCDate() - ACTIVITY_WEEKS * 7);
+
+    const output = await git.raw([
+      'log',
+      '--format=%aI',
+      `--since=${since.toISOString()}`,
+      'HEAD',
+    ]);
+    const dates = output.trim().split('\n').filter(Boolean);
+
+    // Build week → count map
+    const countMap = new Map<string, number>();
+
+    // Pre-fill all weeks with 0 so empty weeks appear in the chart
+    for (let w = 0; w < ACTIVITY_WEEKS; w++) {
+      const d = new Date();
+      d.setUTCDate(d.getUTCDate() - w * 7);
+      countMap.set(getWeekStart(d), 0);
+    }
+
+    for (const d of dates) {
+      const key = getWeekStart(new Date(d));
+      countMap.set(key, (countMap.get(key) ?? 0) + 1);
+    }
+
+    const max = Math.max(...countMap.values(), 1);
+    const weeks: WeeklyActivity[] = [...countMap.entries()]
+      .sort(([a], [b]) => a.localeCompare(b)) // oldest first
+      .map(([weekStart, count]) => ({
+        weekStart,
+        count,
+        level: (count === 0 ? 0
+          : count <= max * 0.25 ? 1
+          : count <= max * 0.5  ? 2
+          : count <= max * 0.75 ? 3
+          : 4) as WeeklyActivity['level'],
+      }));
+
+    return weeks;
+  } catch {
+    return [];
+  }
+}
+
 export async function scanRepo(repoPath: string): Promise<RepoScanResult> {
-  const [fileStats, remoteUrl, defaultBranch, firstCommitDate, contributorCount, commitData] =
+  const [fileStats, remoteUrl, defaultBranch, firstCommitDate, contributorCount, commitData, weeklyActivity] =
     await Promise.all([
       getFileStats(repoPath),
       getRemoteUrl(repoPath),
@@ -96,6 +152,7 @@ export async function scanRepo(repoPath: string): Promise<RepoScanResult> {
       getFirstCommitDate(repoPath),
       getContributorCount(repoPath),
       getRecentCommits(repoPath),
+      getWeeklyActivity(repoPath),
     ]);
 
   const languages = buildLanguageBreakdown(fileStats);
@@ -112,5 +169,6 @@ export async function scanRepo(repoPath: string): Promise<RepoScanResult> {
     contributorCount,
     defaultBranch,
     remoteUrl,
+    weeklyActivity,
   };
 }

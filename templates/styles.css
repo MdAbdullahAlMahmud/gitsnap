@@ -316,6 +316,25 @@ body {
   margin: 0 4px;
 }
 
+/* Activity sparkline */
+.sparkline-wrap { }
+.sparkline {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 36px;
+}
+.spark-bar {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  transition: opacity .15s;
+}
+.spark-bar.level-0 { height: 4px;   background: var(--border); }
+.spark-bar.level-1 { height: 30%;   background: var(--accent); opacity: 0.25; }
+.spark-bar.level-2 { height: 55%;   background: var(--accent); opacity: 0.50; }
+.spark-bar.level-3 { height: 78%;   background: var(--accent); opacity: 0.75; }
+.spark-bar.level-4 { height: 100%;  background: var(--accent); opacity: 1.00; }
+
 /* Topics */
 .topics {
   display: flex;

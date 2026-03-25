@@ -18,6 +18,10 @@ const baseScan: RepoScanResult = {
   contributorCount: 5,
   defaultBranch: 'main',
   remoteUrl: 'https://github.com/alice/my-repo.git',
+  weeklyActivity: [
+    { weekStart: '2026-01-05', count: 3, level: 2 },
+    { weekStart: '2026-01-12', count: 0, level: 0 },
+  ],
 };
 
 const baseResults: CollectorResults = {
@@ -60,7 +64,14 @@ describe('normalize', () => {
     expect(snapshot.packageManager).toBe('npm');
     expect(snapshot.github?.stars).toBe(500);
     expect(snapshot.theme).toBe('dark');
+    expect(snapshot.layout).toBe('default');
+    expect(snapshot.weeklyActivity).toHaveLength(2);
     expect(snapshot.generatedAt).toBeTruthy();
+  });
+
+  it('passes terminal layout through', () => {
+    const snapshot = normalize(baseResults, '/repo', 'dark', 'terminal');
+    expect(snapshot.layout).toBe('terminal');
   });
 
   it('handles missing GitHub data', () => {

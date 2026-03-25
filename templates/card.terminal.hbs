@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{repoName}} — gitsnap terminal</title>
+  <style>{{{styles}}}</style>
+</head>
+<body>
+<div class="window">
+
+  <!-- macOS-style title bar -->
+  <div class="titlebar">
+    <div class="traffic">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+    </div>
+    <div class="titlebar-title">
+      {{#if github.owner}}{{github.owner}}/{{/if}}{{repoName}} — gitsnap
+    </div>
+  </div>
+
+  <!-- Terminal body -->
+  <div class="term-body">
+
+    <!-- ── LEFT: shell session ── -->
+    <div class="term-left">
+
+      <!-- Prompt + gitsnap command -->
+      <div class="prompt-line">
+        <span class="ps1-user">user</span><span class="ps1-at">@</span><span class="ps1-host">dev</span>
+        <span class="ps1-path"> ~/repos/{{repoName}}</span>
+        <span class="ps1-git"> ({{defaultBranch}})</span>
+        <span class="ps1-arrow"> ❯</span>
+        <span class="ps1-cmd"> gitsnap info</span>
+      </div>
+
+      <!-- Repo info output -->
+      <div class="out-block">
+        {{#if github}}
+        <div class="out-line">
+          <span class="out-key">repository</span>
+          <span class="out-cyan out-bold">{{github.owner}}/{{repoName}}</span>
+        </div>
+        {{else}}
+        <div class="out-line">
+          <span class="out-key">repository</span>
+          <span class="out-cyan out-bold">{{repoName}}</span>
+        </div>
+        {{/if}}
+        {{#if github.description}}
+        <div class="out-line">
+          <span class="out-key">description</span>
+          <span class="out-val">{{github.description}}</span>
+        </div>
+        {{/if}}
+        <div class="out-line">
+          <span class="out-key">branch</span>
+          <span class="out-mag">{{defaultBranch}}</span>
+        </div>
+        {{#if packageVersion}}
+        <div class="out-line">
+          <span class="out-key">version</span>
+          <span class="out-green">v{{packageVersion}}</span>
+        </div>
+        {{/if}}
+        {{#if github.license}}
+        <div class="out-line">
+          <span class="out-key">license</span>
+          <span class="out-yellow">{{github.license}}</span>
+        </div>
+        {{/if}}
+        <div class="out-line">
+          <span class="out-key">files</span>
+          <span class="out-val">{{formatNum totalFiles}}</span>
+          <span class="out-dim">  ({{totalSizeFormatted}})</span>
+        </div>
+        <div class="out-line">
+          <span class="out-key">commits</span>
+          <span class="out-val">{{formatNum totalCommits}}</span>
+          {{#if ageFormatted}}
+          <span class="out-dim">  ({{ageFormatted}})</span>
+          {{/if}}
+        </div>
+        {{#if packageManager}}
+        <div class="out-line">
+          <span class="out-key">package manager</span>
+          <span class="out-blue">{{packageManager}}</span>
+          {{#if dependencyCount}}
+          <span class="out-dim">  {{dependencyCount}} deps</span>
+          {{/if}}
+        </div>
+        {{/if}}
+      </div>
+
+      <!-- git log -->
+      {{#if recentCommits.length}}
+      <div class="prompt-line" style="margin-top:4px">
+        <span class="ps1-arrow" style="margin-left:0">❯</span>
+        <span class="ps1-cmd"> git log --oneline -3</span>
+      </div>
+      <div class="git-log">
+        {{#each recentCommits}}
+        <div class="log-line">
+          <span class="log-hash">{{hash}}</span>
+          {{#if @first}}<span class="log-ref">(HEAD → origin) </span>{{/if}}
+          <span class="log-msg">{{message}}</span>
+          <span class="log-date">{{relativeDate}}</span>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+    </div><!-- /term-left -->
+
+    <!-- ── RIGHT: stats panel ── -->
+    <div class="term-right">
+
+      <!-- GitHub stats -->
+      {{#if github}}
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-box-val">{{formatNum github.stars}}</div>
+          <div class="stat-box-label">★ stars</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val">{{formatNum github.forks}}</div>
+          <div class="stat-box-label">⑂ forks</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val">{{github.openIssues}}</div>
+          <div class="stat-box-label">◎ open issues</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-val">{{contributorCount}}</div>
+          <div class="stat-box-label">◈ contributors</div>
+        </div>
+      </div>
+      {{/if}}
+
+      <!-- Language breakdown -->
+      {{#if languages.length}}
+      <div class="lang-table">
+        {{#each languages}}
+        <div class="lang-row">
+          <div class="lang-swatch" style="background:{{color}};"></div>
+          <span style="color:var(--term-text);font-size:12px;">{{language}}</span>
+          <div class="lang-bar-bg">
+            <div class="lang-bar-fill" style="width:{{percentage}}%;background:{{color}};"></div>
+          </div>
+          <span class="lang-pct-val">{{formatPercent percentage}}%</span>
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      <!-- Activity sparkline -->
+      {{#if weeklyActivity.length}}
+      <div class="spark-section">
+        <div class="spark-label">commit activity · 24w</div>
+        <div class="sparkline">
+          {{#each weeklyActivity}}
+            <div class="spark-bar level-{{level}}"></div>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
+      <!-- Topics -->
+      {{#if github.topics.length}}
+      <div style="display:flex;flex-wrap:wrap;gap:5px;">
+        {{#each github.topics}}
+          <span style="font-size:11px;color:var(--term-blue);border:1px solid var(--term-dim);padding:1px 8px;border-radius:3px;">#{{this}}</span>
+        {{/each}}
+      </div>
+      {{/if}}
+
+    </div><!-- /term-right -->
+  </div><!-- /term-body -->
+
+  <!-- Vim-style status bar -->
+  <div class="statusbar">
+    <span class="sb-item">⚡ GITSNAP</span>
+    <span class="sb-item">⎇ {{defaultBranch}}</span>
+    {{#if primaryLanguage}}
+    <span class="sb-item">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{primaryLanguage.color}};display:inline-block;"></span>
+      {{primaryLanguage.language}}
+    </span>
+    {{/if}}
+    <span class="sb-item sb-right">{{formatDate generatedAt}}</span>
+  </div>
+
+</div>
+</body>
+</html>

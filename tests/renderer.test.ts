@@ -36,8 +36,14 @@ const snapshot: RepoSnapshot = {
     repo: 'test-repo',
     avatarUrl: null,
   },
+  weeklyActivity: [
+    { weekStart: '2026-01-05', count: 5, level: 3 },
+    { weekStart: '2026-01-12', count: 0, level: 0 },
+    { weekStart: '2026-01-19', count: 2, level: 1 },
+  ],
   generatedAt: '2026-03-25T00:00:00Z',
   theme: 'dark',
+  layout: 'default',
 };
 
 describe('renderCard', () => {
@@ -80,6 +86,21 @@ describe('renderCard', () => {
     const light = { ...snapshot, theme: 'light' as const };
     const html = await renderCard(light);
     expect(html).toContain('class="light"');
+  });
+
+  it('includes sparkline bars', async () => {
+    const html = await renderCard(snapshot);
+    expect(html).toContain('spark-bar');
+    expect(html).toContain('level-3');
+  });
+
+  it('renders terminal layout with window chrome', async () => {
+    const terminal = { ...snapshot, layout: 'terminal' as const };
+    const html = await renderCard(terminal);
+    expect(html).toContain('class="window"');
+    expect(html).toContain('dot-red');
+    expect(html).toContain('statusbar');
+    expect(html).toContain('git log');
   });
 
   it('includes commit hash and message', async () => {

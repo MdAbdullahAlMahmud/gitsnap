@@ -157,6 +157,18 @@
         {{/unless}}
       </div>
 
+      <!-- Activity sparkline -->
+      {{#if weeklyActivity.length}}
+      <div class="sparkline-wrap">
+        <div class="section-label">Commit activity · last 24 weeks</div>
+        <div class="sparkline">
+          {{#each weeklyActivity}}
+            <div class="spark-bar level-{{level}}" title="{{count}} commits"></div>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
       <!-- Topics -->
       {{#if github.topics.length}}
       <div>
