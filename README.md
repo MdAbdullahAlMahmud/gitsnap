@@ -12,6 +12,10 @@
 
 </div>
 
+<div align="center">
+  <img src="assets/demo.gif" alt="gitsnap demo" width="800" />
+</div>
+
 ---
 
 `gitsnap` turns any git repository into a shareable **1200×630 PNG card** — perfect for social media, README headers, release notes, or Discord/Slack previews. It automatically pulls language stats, GitHub metadata, recent commits, and more.
