@@ -21,7 +21,7 @@ describe('takeScreenshot', () => {
   });
 
   it('generates a PNG file with valid magic bytes', async () => {
-    const output = path.join(os.tmpdir(), `gitsnap-test-${Date.now()}`);
+    const output = path.join(os.tmpdir(), `gitcard-test-${Date.now()}`);
     const result = await takeScreenshot(HTML, {
       format: 'png',
       output,
@@ -37,7 +37,7 @@ describe('takeScreenshot', () => {
   }, 30000);
 
   it('generates a PDF file', async () => {
-    const output = path.join(os.tmpdir(), `gitsnap-test-${Date.now()}`);
+    const output = path.join(os.tmpdir(), `gitcard-test-${Date.now()}`);
     const result = await takeScreenshot(HTML, {
       format: 'pdf',
       output,

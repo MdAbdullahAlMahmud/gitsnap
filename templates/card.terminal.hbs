@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{repoName}} — gitsnap terminal</title>
+  <title>{{repoName}} — gitcard terminal</title>
   <style>{{{styles}}}</style>
 </head>
 <body>
@@ -16,7 +16,7 @@
       <div class="dot dot-green"></div>
     </div>
     <div class="titlebar-title">
-      {{#if github.owner}}{{github.owner}}/{{/if}}{{repoName}} — gitsnap
+      {{#if github.owner}}{{github.owner}}/{{/if}}{{repoName}} — gitcard
     </div>
   </div>
 
@@ -26,13 +26,13 @@
     <!-- ── LEFT: shell session ── -->
     <div class="term-left">
 
-      <!-- Prompt + gitsnap command -->
+      <!-- Prompt + gitcard command -->
       <div class="prompt-line">
         <span class="ps1-user">user</span><span class="ps1-at">@</span><span class="ps1-host">dev</span>
         <span class="ps1-path"> ~/repos/{{repoName}}</span>
         <span class="ps1-git"> ({{defaultBranch}})</span>
         <span class="ps1-arrow"> ❯</span>
-        <span class="ps1-cmd"> gitsnap info</span>
+        <span class="ps1-cmd"> gitcard info</span>
       </div>
 
       <!-- Repo info output -->

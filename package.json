@@ -1,11 +1,11 @@
 {
-  "name": "gitsnap",
+  "name": "gitcard",
   "version": "1.0.0",
   "description": "Generate beautiful visual snapshot cards of git repositories",
   "type": "module",
   "main": "./dist/cli.js",
   "bin": {
-    "gitsnap": "./bin/gitsnap.js"
+    "gitcard": "./bin/gitcard.js"
   },
   "files": [
     "dist",
@@ -42,15 +42,15 @@
     "github",
     "stats"
   ],
-  "author": "",
+  "author": "Abdullah <mmunna864@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MdAbdullahAlMahmud/gitsnap.git"
+    "url": "https://github.com/MdAbdullahAlMahmud/gitcard.git"
   },
-  "homepage": "https://github.com/MdAbdullahAlMahmud/gitsnap#readme",
+  "homepage": "https://github.com/MdAbdullahAlMahmud/gitcard#readme",
   "bugs": {
-    "url": "https://github.com/MdAbdullahAlMahmud/gitsnap/issues"
+    "url": "https://github.com/MdAbdullahAlMahmud/gitcard/issues"
   },
   "lint-staged": {
     "*.ts": [

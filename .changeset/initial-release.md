@@ -1,8 +1,8 @@
 ---
-"gitsnap": major
+"gitcard": major
 ---
 
-Initial release of gitsnap — a CLI tool that generates beautiful visual snapshot cards of git repositories.
+Initial release of gitcard — a CLI tool that generates beautiful visual snapshot cards of git repositories.
 
 Features:
 - Language breakdown bar with GitHub-style colors

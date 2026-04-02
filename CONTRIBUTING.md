@@ -1,12 +1,12 @@
-# Contributing to gitsnap
+# Contributing to gitcard
 
 Thank you for your interest in contributing!
 
 ## Setup
 
 ```bash
-git clone https://github.com/MdAbdullahAlMahmud/gitsnap
-cd gitsnap
+git clone https://github.com/MdAbdullahAlMahmud/gitcard
+cd gitcard
 npm install
 ```
 

@@ -1,8 +1,8 @@
-# gitsnap — AI Development Guide
+# gitcard — AI Development Guide
 
 ## Project Overview
 
-**gitsnap** is a CLI tool (`npx gitsnap [repo-path]`) that generates a 1200×630 PNG/PDF/SVG "snapshot card" of any git repository. It collects repo metadata (languages, commits, stats) + optional GitHub API data, renders an HTML card via Handlebars, and screenshots it with Puppeteer.
+**gitcard** is a CLI tool (`npx gitcard [repo-path]`) that generates a 1200×630 PNG/PDF/SVG "snapshot card" of any git repository. It collects repo metadata (languages, commits, stats) + optional GitHub API data, renders an HTML card via Handlebars, and screenshots it with Puppeteer.
 
 ## Architecture
 

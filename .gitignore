@@ -4,7 +4,7 @@ coverage/
 *.png
 *.pdf
 *.svg
-!gitsnap_architecture.svg
+!gitcard_architecture.svg
 !assets/*.png
 .DS_Store
 *.log

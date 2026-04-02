@@ -11,14 +11,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const CLI = path.join(ROOT, 'src/cli.ts');
 
-const tmpOutput = path.join(os.tmpdir(), `gitsnap-e2e-${Date.now()}`);
+const tmpOutput = path.join(os.tmpdir(), `gitcard-e2e-${Date.now()}`);
 
 describe('CLI E2E', () => {
   afterAll(async () => {
     await fs.unlink(`${tmpOutput}.png`).catch(() => {});
   });
 
-  it('generates a PNG when run on the gitsnap repo with --no-github', async () => {
+  it('generates a PNG when run on the gitcard repo with --no-github', async () => {
     const { stdout, stderr } = await execFileAsync(
       'node',
       ['--import', 'tsx/esm', CLI, ROOT, '--no-github', '--output', tmpOutput],

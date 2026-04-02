@@ -12,7 +12,7 @@ let fixtureRepo: string;
 
 beforeAll(async () => {
   // Create a small git repo with known files for testing
-  fixtureRepo = path.join(os.tmpdir(), `gitsnap-fixture-${Date.now()}`);
+  fixtureRepo = path.join(os.tmpdir(), `gitcard-fixture-${Date.now()}`);
   await fs.mkdir(fixtureRepo, { recursive: true });
   await exec('git', ['init'], { cwd: fixtureRepo });
   await exec('git', ['config', 'user.email', 'test@test.com'], { cwd: fixtureRepo });
@@ -25,7 +25,9 @@ beforeAll(async () => {
 
   await exec('git', ['add', '.'], { cwd: fixtureRepo });
   await exec('git', ['commit', '-m', 'feat: initial commit'], { cwd: fixtureRepo });
-  await exec('git', ['commit', '--allow-empty', '-m', 'chore: second commit'], { cwd: fixtureRepo });
+  await exec('git', ['commit', '--allow-empty', '-m', 'chore: second commit'], {
+    cwd: fixtureRepo,
+  });
 });
 
 afterAll(async () => {

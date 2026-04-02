@@ -1,7 +1,15 @@
 import { Command } from 'commander';
 import path from 'node:path';
 import { exec } from 'node:child_process';
-import { VERSION, DEFAULT_FORMAT, DEFAULT_THEME, DEFAULT_OUTPUT, DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_LAYOUT } from './constants.js';
+import {
+  VERSION,
+  DEFAULT_FORMAT,
+  DEFAULT_THEME,
+  DEFAULT_OUTPUT,
+  DEFAULT_WIDTH,
+  DEFAULT_HEIGHT,
+  DEFAULT_LAYOUT,
+} from './constants.js';
 import { isGitRepo } from './utils/git.js';
 import { runCollectors } from './collectors/index.js';
 import { normalize } from './normalizer.js';
@@ -12,16 +20,18 @@ import type { CLIOptions } from './types.js';
 
 function openFile(filePath: string): void {
   const cmd =
-    process.platform === 'darwin' ? `open "${filePath}"` :
-    process.platform === 'win32'  ? `start "" "${filePath}"` :
-                                    `xdg-open "${filePath}"`;
+    process.platform === 'darwin'
+      ? `open "${filePath}"`
+      : process.platform === 'win32'
+        ? `start "" "${filePath}"`
+        : `xdg-open "${filePath}"`;
   exec(cmd);
 }
 
 const program = new Command();
 
 program
-  .name('gitsnap')
+  .name('gitcard')
   .description('Generate beautiful visual snapshot cards of git repositories')
   .version(VERSION)
   .argument('[repo-path]', 'Path to the git repository', '.')
@@ -77,7 +87,11 @@ program
 
     // Collect data
     logger.succeed('Repository found');
-    logger.start(options.noGithub ? 'Scanning repository...' : 'Scanning repository and fetching GitHub data...');
+    logger.start(
+      options.noGithub
+        ? 'Scanning repository...'
+        : 'Scanning repository and fetching GitHub data...',
+    );
 
     let collectorResults;
     try {

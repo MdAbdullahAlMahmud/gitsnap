@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "my-python-app"
+version = "0.2.0"
+description = "A sample Python app"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+fastapi = "^0.104.0"
+pydantic = "^2.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
