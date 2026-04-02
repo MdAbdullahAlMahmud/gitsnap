@@ -6,6 +6,7 @@ coverage/
 *.svg
 !gitcard_architecture.svg
 !assets/*.png
+!assets/*.gif
 .DS_Store
 *.log
 .env
